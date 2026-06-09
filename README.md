@@ -1,21 +1,27 @@
-# Boutique Stay Assistant Public Demo
+# Kimpton AI Public Clean-Room Demo
 
-This repository contains a clean-room TypeScript CLI that demonstrates a public-concept boutique hospitality assistant. It generates mocked stay plans from synthetic guest profiles, fictional property profiles, amenities, and local experiences.
+This repository contains an original TypeScript web app demonstrating a synthetic AI-native investment research workspace. It models onboarding, research project setup, an evidence notebook, synthetic filings/news/market snippets, thesis generation, analyst review tasks, mocked data integrations, tests, and documentation.
 
-The demo is intentionally small and deterministic so it can be reviewed, tested, and run without external services.
+The app is deterministic and local-only. It is designed for clean-room demonstration of a public product concept, not for production financial workflows.
 
 ## Clean-Room Disclaimer
 
-- This project is not affiliated with, endorsed by, or connected to any real hotel brand, booking platform, travel agency, or regulated travel service.
-- It does not use proprietary source code, private data, brand assets, logos, trademarks, copied marketing language, or non-public product materials.
-- All properties, guests, amenities, and local experiences are synthetic examples created for this repository.
-- All integrations are mocked. The app does not call real third-party services, make bookings, process payments, or provide regulated travel advice.
+- This project is a public clean-room demo and is not affiliated with, endorsed by, or connected to any investment adviser, broker-dealer, exchange, data vendor, or issuer.
+- It does not use proprietary source code, private data, paid research datasets, copied marketing language, brand assets, logos, or non-public materials.
+- All companies, analysts, filings, news items, market snippets, citations, tasks, and integrations are synthetic seed data created for this repository.
+- It does not provide investment advice, recommendations to buy or sell securities, underwriting, portfolio management, brokerage services, live market data, trade execution, payments, or money movement.
+- Mocked integrations are local metadata only and do not call third-party APIs.
 
-## What It Demonstrates
+## Features
 
-- Synthetic guest preference matching for amenities and local experiences.
-- Deterministic scoring based on travel-style tags, budget tier, property setting, and accessibility-oriented notes.
-- Text and JSON outputs suitable for demos, tests, or downstream mock workflows.
+- Onboarding panel with a synthetic analyst persona and clean-room boundary copy.
+- Research project setup for fictional companies and selected evidence signals.
+- Evidence notebook with synthetic filing, news, market, and note snippets.
+- Deterministic thesis generation for bull, base, and bear cases.
+- Analyst review task/status board with risk flags and citation checks.
+- Mock integration status cards for filings, news, market snapshots, and local notes.
+- JSON API endpoints for catalog and project data.
+- Validation tests for catalog setup, evidence ranking, thesis generation, task summaries, and disclaimers.
 
 ## Requirements
 
@@ -28,7 +34,7 @@ The demo is intentionally small and deterministic so it can be reviewed, tested,
 npm install
 ```
 
-## Usage
+## Run The Web App
 
 Build the TypeScript source:
 
@@ -36,23 +42,25 @@ Build the TypeScript source:
 npm run build
 ```
 
-List available synthetic inputs:
+Start the local web server:
 
 ```bash
-npm run start -- --list
+npm start
 ```
 
-Generate a text stay plan:
+Open `http://localhost:3000`.
 
-```bash
-npm run start -- --guest luna --property harbor --days 2 --format text
+You can adjust the default project with query parameters:
+
+```text
+http://localhost:3000/?analyst=dev&company=civic-signal&signals=risk,governance,valuation
 ```
 
-Generate a JSON stay plan:
+## API Endpoints
 
-```bash
-npm run start -- --guest avery --property market --days 1 --format json
-```
+- `GET /api/catalog` returns synthetic analysts, companies, mocked integrations, and the disclaimer.
+- `GET /api/project` returns a generated research workspace project.
+- `GET /api/project?analyst=nora&company=northstar-grid&signals=growth,product,risk` customizes the synthetic project.
 
 ## Validation
 
@@ -62,23 +70,24 @@ Run the test suite:
 npm test
 ```
 
-Run the full validation script, including a sample CLI execution:
+Run the full validation script, including a smoke output from the app entrypoint:
 
 ```bash
 npm run validate
 ```
 
-## Data
+## Seed Data
 
-Seed data lives in `src/data/syntheticStayData.ts` and includes:
+Synthetic data lives in `src/data/syntheticResearchData.ts` and includes:
 
-- Three fictional properties.
-- Three synthetic guest profiles.
-- Ten fictional local experiences.
-- A reusable clean-room disclaimer included in app output.
+- Three fictional analyst personas.
+- Three fictional companies.
+- Nine synthetic evidence snippets spanning filings, news, market context, and local notes.
+- Four mocked integration status records.
+- Four analyst review tasks.
 
-## Scope Limits
+## Scope Limitations
 
-- No real availability, rates, reservations, loyalty accounts, maps, vendor listings, or concierge systems are connected.
-- Recommendations are simple rule-based mock output, not machine-learning predictions.
-- The CLI is a public-concept demonstration only and should not be used for live guest operations.
+- No live prices, filings, news, research feeds, financial statements, portfolios, brokerage accounts, trades, or payments are connected.
+- Thesis generation is deterministic local string assembly over synthetic evidence, not a financial model or investment recommendation engine.
+- Outputs are for demo and validation only and should not be used to make investment or trading decisions.

@@ -1,75 +1,92 @@
-export type TravelTag =
-  | "accessibility"
-  | "business"
-  | "culture"
-  | "family"
-  | "food"
-  | "outdoors"
-  | "quiet"
-  | "wellness";
+export type EvidenceKind = "filing" | "news" | "market" | "note";
+export type EvidenceSignal = "growth" | "margin" | "risk" | "valuation" | "governance" | "product";
+export type ReviewStatus = "todo" | "in_review" | "blocked" | "approved";
+export type ThesisCase = "bull" | "base" | "bear";
 
-export type TimeOfDay = "morning" | "afternoon" | "evening";
-
-export interface Amenity {
+export interface AnalystPersona {
   id: string;
   name: string;
-  description: string;
-  tags: TravelTag[];
-  hours: string;
+  role: string;
+  coverage: string[];
+  reviewFocus: EvidenceSignal[];
 }
 
-export interface LocalExperience {
+export interface SyntheticCompany {
   id: string;
   name: string;
-  neighborhood: string;
+  sector: string;
   description: string;
-  tags: TravelTag[];
-  timeOfDay: TimeOfDay[];
-  durationMinutes: number;
-  priceTier: 0 | 1 | 2 | 3;
-  accessibilityNotes?: string;
+  tags: EvidenceSignal[];
 }
 
-export interface PropertyProfile {
+export interface EvidenceSnippet {
   id: string;
-  name: string;
-  city: string;
+  companyId: string;
+  kind: EvidenceKind;
+  title: string;
+  sourceLabel: string;
+  publishedOn: string;
   summary: string;
-  vibeTags: TravelTag[];
-  amenities: Amenity[];
+  signals: EvidenceSignal[];
+  confidence: number;
+  citations: string[];
 }
 
-export interface GuestProfile {
+export interface MockIntegration {
   id: string;
-  displayName: string;
-  preferences: TravelTag[];
-  avoid: TravelTag[];
-  budgetTier: 0 | 1 | 2 | 3;
-  arrivalHour: number;
-  departureHour: number;
-  mobilitySupportRequested: boolean;
+  name: string;
+  category: "filings" | "news" | "market" | "notes";
+  status: "mocked" | "available" | "paused";
+  lastSync: string;
+  description: string;
 }
 
-export interface ScoredItem<T> {
-  item: T;
+export interface ReviewTask {
+  id: string;
+  title: string;
+  ownerId: string;
+  status: ReviewStatus;
+  relatedEvidenceIds: string[];
+  riskFlags: string[];
+}
+
+export interface ResearchProjectInput {
+  analystId: string;
+  companyId: string;
+  objective: string;
+  selectedSignals: EvidenceSignal[];
+}
+
+export interface RankedEvidence {
+  evidence: EvidenceSnippet;
   score: number;
   reasons: string[];
 }
 
-export interface DayPlan {
-  day: number;
-  schedule: Array<{
-    timeOfDay: TimeOfDay;
-    experience: ScoredItem<LocalExperience>;
-  }>;
+export interface ThesisSection {
+  case: ThesisCase;
+  headline: string;
+  narrative: string;
+  supportingEvidenceIds: string[];
 }
 
-export interface StayPlan {
-  generatedAt: string;
+export interface ResearchProject {
+  id: string;
   disclaimer: string;
-  property: PropertyProfile;
-  guest: GuestProfile;
-  recommendedAmenities: Array<ScoredItem<Amenity>>;
-  days: DayPlan[];
-  conciergeNote: string;
+  analyst: AnalystPersona;
+  company: SyntheticCompany;
+  objective: string;
+  selectedSignals: EvidenceSignal[];
+  notebook: RankedEvidence[];
+  theses: ThesisSection[];
+  reviewTasks: ReviewTask[];
+  integrations: MockIntegration[];
+  statusSummary: Record<ReviewStatus, number>;
+}
+
+export interface WorkspaceCatalog {
+  disclaimer: string;
+  analysts: AnalystPersona[];
+  companies: SyntheticCompany[];
+  integrations: MockIntegration[];
 }

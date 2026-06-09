@@ -1,23 +1,20 @@
 {
-  "name": "boutique-stay-assistant-public",
+  "name": "kimpton-ai-public",
   "version": "1.0.0",
-  "description": "Clean-room TypeScript demo for a synthetic boutique hospitality guest-assistance concept.",
-  "main": "dist/index.js",
-  "bin": {
-    "stay-assistant-demo": "dist/index.js"
-  },
+  "description": "Clean-room TypeScript web app demonstrating a synthetic AI-native investment research workspace.",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/index.js",
-    "test": "npm run build && node dist/tests/planner.test.js",
-    "validate": "npm run test && node dist/index.js --guest luna --property harbor --days 2 --format text"
+    "start": "node dist/server.js",
+    "test": "npm run build && node dist/tests/workspace.test.js",
+    "validate": "npm run test && node dist/server.js --smoke"
   },
   "keywords": [
     "clean-room",
     "typescript",
-    "hospitality",
-    "demo",
-    "synthetic-data"
+    "investment-research",
+    "synthetic-data",
+    "mock-integrations"
   ],
   "license": "MIT",
   "devDependencies": {
