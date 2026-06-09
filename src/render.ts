@@ -42,6 +42,18 @@ export function renderWorkspace(catalog: WorkspaceCatalog, project: ResearchProj
       </article>
     </section>
     <section class="grid">
+      <article class="panel memos">
+        <p class="eyebrow">Source Memo Synthesis</p>
+        <h2>Seeded public-style notes</h2>
+        ${project.sourceMemos.map(renderMemo).join("")}
+      </article>
+      <article class="panel assumptions">
+        <p class="eyebrow">Risk And Assumptions</p>
+        <h2>Tracked review items</h2>
+        ${project.riskAssumptions.map(renderAssumption).join("")}
+      </article>
+    </section>
+    <section class="grid">
       <article class="panel tasks">
         <p class="eyebrow">Analyst Review</p>
         <h2>Task status</h2>
@@ -84,6 +96,22 @@ function renderTask(task: ResearchProject["reviewTasks"][number]): string {
   return `<div class="card task">
     <strong>${escapeHtml(task.title)}</strong>
     <span>${escapeHtml(task.status)} · ${task.riskFlags.map(escapeHtml).join(", ")}</span>
+  </div>`;
+}
+
+function renderMemo(memo: ResearchProject["sourceMemos"][number]): string {
+  return `<div class="card memo">
+    <strong>${escapeHtml(memo.title)}</strong>
+    <p>${escapeHtml(memo.synthesis)}</p>
+    <small>Open questions: ${memo.unresolvedQuestions.map(escapeHtml).join(" | ")}</small>
+  </div>`;
+}
+
+function renderAssumption(assumption: ResearchProject["riskAssumptions"][number]): string {
+  return `<div class="card assumption">
+    <strong>${escapeHtml(assumption.category)} · ${escapeHtml(assumption.status)}</strong>
+    <p>${escapeHtml(assumption.statement)}</p>
+    <small>Linked evidence: ${assumption.linkedEvidenceIds.map(escapeHtml).join(", ") || "none"}</small>
   </div>`;
 }
 

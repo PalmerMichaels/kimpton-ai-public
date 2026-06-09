@@ -13,8 +13,10 @@ import type {
   RankedEvidence,
   ResearchProject,
   ResearchProjectInput,
+  RiskAssumption,
   ReviewStatus,
   ReviewTask,
+  SourceMemo,
   SyntheticCompany,
   ThesisSection,
   WorkspaceCatalog
@@ -35,6 +37,8 @@ export function createResearchProject(input: ResearchProjectInput): ResearchProj
   const selectedSignals = normalizeSignals(input.selectedSignals, company, analyst);
   const notebook = rankEvidence(company.id, selectedSignals, analyst.reviewFocus);
   const projectTasks = assembleReviewTasks(notebook);
+  const sourceMemos = synthesizeSourceMemos(company, notebook);
+  const riskAssumptions = trackRiskAssumptions(company, notebook, selectedSignals);
 
   return {
     id: `research-${company.id}-${analyst.id}`,
@@ -44,6 +48,8 @@ export function createResearchProject(input: ResearchProjectInput): ResearchProj
     objective: input.objective.trim() || `Build a synthetic research brief for ${company.name}.`,
     selectedSignals,
     notebook,
+    sourceMemos,
+    riskAssumptions,
     theses: generateThesisSections(company, notebook),
     reviewTasks: projectTasks,
     integrations,
@@ -91,6 +97,52 @@ export function generateThesisSections(company: SyntheticCompany, notebook: Rank
       headline: `${company.name} downside case: unresolved risk signals remain`,
       narrative: buildNarrative(company, riskEvidence, "highlights open questions that should be resolved before any real-world use"),
       supportingEvidenceIds: riskEvidence.map((item) => item.evidence.id)
+    }
+  ];
+}
+
+export function synthesizeSourceMemos(company: SyntheticCompany, notebook: RankedEvidence[]): SourceMemo[] {
+  const groups = groupEvidenceByKind(notebook);
+
+  return Object.entries(groups).map(([kind, items]) => ({
+    id: `memo-${company.id}-${kind}`,
+    title: `${company.name} ${kind} source memo`,
+    sourceEvidenceIds: items.map((item) => item.evidence.id),
+    synthesis: buildMemoSynthesis(kind, items),
+    unresolvedQuestions: buildUnresolvedQuestions(items)
+  }));
+}
+
+export function trackRiskAssumptions(
+  company: SyntheticCompany,
+  notebook: RankedEvidence[],
+  selectedSignals: EvidenceSignal[]
+): RiskAssumption[] {
+  const riskEvidence = notebook.filter((item) => item.evidence.signals.includes("risk"));
+  const valuationEvidence = notebook.filter((item) => item.evidence.signals.includes("valuation"));
+  const productEvidence = notebook.filter((item) => item.evidence.signals.includes("product"));
+
+  return [
+    {
+      id: `assumption-${company.id}-risk-controls`,
+      category: "risk",
+      statement: "Synthetic risk disclosures remain bounded by the evidence notebook and require reviewer confirmation.",
+      status: riskEvidence.length > 0 ? "reviewing" : "untested",
+      linkedEvidenceIds: riskEvidence.map((item) => item.evidence.id)
+    },
+    {
+      id: `assumption-${company.id}-valuation-context`,
+      category: "valuation",
+      statement: "Synthetic valuation context is directional only and must not be interpreted as a price target or trading signal.",
+      status: valuationEvidence.length > 0 && selectedSignals.includes("valuation") ? "supported" : "untested",
+      linkedEvidenceIds: valuationEvidence.map((item) => item.evidence.id)
+    },
+    {
+      id: `assumption-${company.id}-product-durability`,
+      category: "product",
+      statement: "Synthetic product adoption notes may overstate durability until citations are reviewed.",
+      status: productEvidence.length > 0 ? "challenged" : "untested",
+      linkedEvidenceIds: productEvidence.map((item) => item.evidence.id)
     }
   ];
 }
@@ -146,6 +198,30 @@ function buildNarrative(company: SyntheticCompany, evidence: RankedEvidence[], c
   const support = evidenceText || "no high-confidence synthetic evidence selected";
 
   return `${company.description} Selected synthetic evidence: ${support}. This ${conclusion}.`;
+}
+
+function groupEvidenceByKind(notebook: RankedEvidence[]): Record<string, RankedEvidence[]> {
+  return notebook.reduce<Record<string, RankedEvidence[]>>((groups, item) => {
+    groups[item.evidence.kind] = [...(groups[item.evidence.kind] ?? []), item];
+    return groups;
+  }, {});
+}
+
+function buildMemoSynthesis(kind: string, items: RankedEvidence[]): string {
+  const signalSummary = [...new Set(items.flatMap((item) => item.evidence.signals))].join(", ");
+  const citationSummary = items.flatMap((item) => item.evidence.citations).join(", ");
+
+  return `${kind} sources contribute ${signalSummary || "no"} signals using synthetic citations ${citationSummary || "none"}. This memo summarizes seeded public-style notes only and does not establish investable facts.`;
+}
+
+function buildUnresolvedQuestions(items: RankedEvidence[]): string[] {
+  const questions = items.flatMap((item) =>
+    item.evidence.signals.includes("risk")
+      ? [`What reviewer evidence would reduce uncertainty in ${item.evidence.title}?`]
+      : [`Which synthetic citation should be re-read for ${item.evidence.title}?`]
+  );
+
+  return questions.slice(0, 3);
 }
 
 function assembleReviewTasks(notebook: RankedEvidence[]): ReviewTask[] {

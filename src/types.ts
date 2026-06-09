@@ -70,6 +70,22 @@ export interface ThesisSection {
   supportingEvidenceIds: string[];
 }
 
+export interface SourceMemo {
+  id: string;
+  title: string;
+  sourceEvidenceIds: string[];
+  synthesis: string;
+  unresolvedQuestions: string[];
+}
+
+export interface RiskAssumption {
+  id: string;
+  category: EvidenceSignal;
+  statement: string;
+  status: "untested" | "reviewing" | "supported" | "challenged";
+  linkedEvidenceIds: string[];
+}
+
 export interface ResearchProject {
   id: string;
   disclaimer: string;
@@ -78,6 +94,8 @@ export interface ResearchProject {
   objective: string;
   selectedSignals: EvidenceSignal[];
   notebook: RankedEvidence[];
+  sourceMemos: SourceMemo[];
+  riskAssumptions: RiskAssumption[];
   theses: ThesisSection[];
   reviewTasks: ReviewTask[];
   integrations: MockIntegration[];

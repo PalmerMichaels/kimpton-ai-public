@@ -1,11 +1,20 @@
 import assert from "node:assert/strict";
-import { createResearchProject, generateThesisSections, getCatalog, rankEvidence, summarizeTaskStatus } from "../workspace";
+import {
+  createResearchProject,
+  generateThesisSections,
+  getCatalog,
+  rankEvidence,
+  summarizeTaskStatus,
+  synthesizeSourceMemos,
+  trackRiskAssumptions
+} from "../workspace";
 import { companies } from "../data/syntheticResearchData";
 
 function runTests(): void {
   testCatalogContainsSyntheticInputs();
   testProjectBuildsEvidenceNotebookAndTheses();
   testEvidenceRankingPrioritizesSelectedSignals();
+  testSourceMemosAndRiskAssumptions();
   testReviewStatusSummaryIncludesAllStates();
   testDisclaimersRejectAdviceAndLiveData();
   console.log("All validation tests passed.");
@@ -31,8 +40,24 @@ function testProjectBuildsEvidenceNotebookAndTheses(): void {
   assert.equal(project.id, "research-aurora-ledger-maya");
   assert.equal(project.notebook.length, 3);
   assert.equal(project.theses.length, 3);
+  assert(project.sourceMemos.length > 0);
+  assert.equal(project.riskAssumptions.length, 3);
   assert(project.theses.some((section) => section.case === "bear"));
   assert(project.reviewTasks.length > 0);
+}
+
+function testSourceMemosAndRiskAssumptions(): void {
+  const company = companies.find((candidate) => candidate.id === "aurora-ledger");
+  assert(company);
+
+  const notebook = rankEvidence(company.id, ["growth", "risk", "valuation"], ["risk", "valuation"]);
+  const memos = synthesizeSourceMemos(company, notebook);
+  const assumptions = trackRiskAssumptions(company, notebook, ["growth", "risk", "valuation"]);
+
+  assert(memos.some((memo) => memo.title.includes("source memo")));
+  assert(memos.every((memo) => memo.synthesis.includes("seeded public-style notes")));
+  assert.equal(assumptions.length, 3);
+  assert(assumptions.some((assumption) => assumption.category === "risk" && assumption.linkedEvidenceIds.length > 0));
 }
 
 function testEvidenceRankingPrioritizesSelectedSignals(): void {

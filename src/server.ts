@@ -73,6 +73,8 @@ function main(): void {
     console.log(JSON.stringify({
       projectId: project.id,
       evidenceCount: project.notebook.length,
+      sourceMemoCount: project.sourceMemos.length,
+      assumptionCount: project.riskAssumptions.length,
       thesisCount: project.theses.length,
       disclaimer: project.disclaimer
     }, null, 2));

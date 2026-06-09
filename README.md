@@ -1,6 +1,6 @@
 # Kimpton AI Public Clean-Room Demo
 
-This repository contains an original TypeScript web app demonstrating a synthetic AI-native investment research workspace. It models onboarding, research project setup, an evidence notebook, synthetic filings/news/market snippets, thesis generation, analyst review tasks, mocked data integrations, tests, and documentation.
+This repository contains an original TypeScript web app demonstrating a synthetic AI-native investment research workspace. It models onboarding, research intake, thesis/workspace organization, source memo synthesis from seeded public-style notes, risk/assumption tracking, analyst review tasks, mocked data integrations, tests, and documentation.
 
 The app is deterministic and local-only. It is designed for clean-room demonstration of a public product concept, not for production financial workflows.
 
@@ -17,6 +17,8 @@ The app is deterministic and local-only. It is designed for clean-room demonstra
 - Onboarding panel with a synthetic analyst persona and clean-room boundary copy.
 - Research project setup for fictional companies and selected evidence signals.
 - Evidence notebook with synthetic filing, news, market, and note snippets.
+- Source memo synthesis from seeded public-style notes and synthetic citations.
+- Risk and assumption tracking with statuses and linked evidence.
 - Deterministic thesis generation for bull, base, and bear cases.
 - Analyst review task/status board with risk flags and citation checks.
 - Mock integration status cards for filings, news, market snapshots, and local notes.
