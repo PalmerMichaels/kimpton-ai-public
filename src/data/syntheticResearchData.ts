@@ -3,6 +3,18 @@ import type { AnalystPersona, EvidenceSnippet, MockIntegration, ReviewTask, Synt
 export const cleanRoomDisclaimer =
   "Clean-room public demo using synthetic research data and local mock analysis only. Not investment advice, not a recommendation to buy or sell securities, and not connected to live market data, brokerage, portfolio management, underwriting, or money movement.";
 
+export const enforcedLimitations = [
+  "No investment advice",
+  "No trading",
+  "No portfolio management",
+  "No brokerage",
+  "No live market data",
+  "No proprietary datasets",
+  "No underwriting",
+  "No money movement",
+  "Synthetic or mocked data only"
+];
+
 export const analysts: AnalystPersona[] = [
   {
     id: "maya",
@@ -68,10 +80,10 @@ export const evidenceSnippets: EvidenceSnippet[] = [
     id: "aurora-product-note",
     companyId: "aurora-ledger",
     kind: "note",
-    title: "Analyst note: reconciliation assistant pilot",
+    title: "Analyst note: reconciliation workflow pilot",
     sourceLabel: "Local notebook",
     publishedOn: "2026-02-03",
-    summary: "Three synthetic finance teams reported faster exception triage after a mocked assistant rollout.",
+    summary: "Three synthetic finance teams reported faster exception triage after a mocked automation rollout.",
     signals: ["product", "growth"],
     confidence: 0.72,
     citations: ["SYN-CALL-AUR-17"]

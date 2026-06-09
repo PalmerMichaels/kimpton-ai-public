@@ -76,6 +76,7 @@ function main(): void {
       sourceMemoCount: project.sourceMemos.length,
       assumptionCount: project.riskAssumptions.length,
       thesisCount: project.theses.length,
+      enforcedLimitations: project.enforcedLimitations,
       disclaimer: project.disclaimer
     }, null, 2));
     return;

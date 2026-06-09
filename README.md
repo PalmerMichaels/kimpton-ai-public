@@ -12,6 +12,8 @@ The app is deterministic and local-only. It is designed for clean-room demonstra
 - It does not provide investment advice, recommendations to buy or sell securities, underwriting, portfolio management, brokerage services, live market data, trade execution, payments, or money movement.
 - Mocked integrations are local metadata only and do not call third-party APIs.
 
+The app also exposes these limits as runtime metadata in `enforcedLimitations` on both catalog and generated project responses.
+
 ## Features
 
 - Onboarding panel with a synthetic analyst persona and clean-room boundary copy.

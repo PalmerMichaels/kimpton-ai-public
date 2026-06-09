@@ -2,6 +2,7 @@ import {
   analysts,
   cleanRoomDisclaimer,
   companies,
+  enforcedLimitations,
   evidenceSnippets,
   integrations,
   reviewTasks
@@ -25,6 +26,7 @@ import type {
 export function getCatalog(): WorkspaceCatalog {
   return {
     disclaimer: cleanRoomDisclaimer,
+    enforcedLimitations,
     analysts,
     companies,
     integrations
@@ -43,6 +45,7 @@ export function createResearchProject(input: ResearchProjectInput): ResearchProj
   return {
     id: `research-${company.id}-${analyst.id}`,
     disclaimer: cleanRoomDisclaimer,
+    enforcedLimitations,
     analyst,
     company,
     objective: input.objective.trim() || `Build a synthetic research brief for ${company.name}.`,

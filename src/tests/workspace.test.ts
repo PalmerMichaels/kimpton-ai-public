@@ -27,6 +27,7 @@ function testCatalogContainsSyntheticInputs(): void {
   assert.equal(catalog.companies.length, 3);
   assert.equal(catalog.integrations.every((integration) => integration.status !== "paused"), true);
   assert(catalog.disclaimer.includes("synthetic research data"));
+  assert(catalog.enforcedLimitations.includes("No live market data"));
 }
 
 function testProjectBuildsEvidenceNotebookAndTheses(): void {
@@ -92,6 +93,8 @@ function testDisclaimersRejectAdviceAndLiveData(): void {
 
   assert(project.disclaimer.includes("Not investment advice"));
   assert(project.disclaimer.includes("not connected to live market data"));
+  assert(project.enforcedLimitations.includes("No trading"));
+  assert(project.enforcedLimitations.includes("No money movement"));
   assert(!text.toLowerCase().includes("buy"));
   assert(!text.toLowerCase().includes("sell"));
 }

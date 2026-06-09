@@ -89,6 +89,7 @@ export interface RiskAssumption {
 export interface ResearchProject {
   id: string;
   disclaimer: string;
+  enforcedLimitations: string[];
   analyst: AnalystPersona;
   company: SyntheticCompany;
   objective: string;
@@ -104,6 +105,7 @@ export interface ResearchProject {
 
 export interface WorkspaceCatalog {
   disclaimer: string;
+  enforcedLimitations: string[];
   analysts: AnalystPersona[];
   companies: SyntheticCompany[];
   integrations: MockIntegration[];

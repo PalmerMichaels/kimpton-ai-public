@@ -14,6 +14,7 @@ export function renderWorkspace(catalog: WorkspaceCatalog, project: ResearchProj
     <p class="eyebrow">Clean-room public concept</p>
     <h1>AI-native investment research workspace</h1>
     <p>${escapeHtml(catalog.disclaimer)}</p>
+    <div class="limit-strip">${catalog.enforcedLimitations.map((limit) => `<span>${escapeHtml(limit)}</span>`).join("")}</div>
   </header>
   <main>
     <section class="panel onboarding">
@@ -135,6 +136,8 @@ function css(): string {
     .hero { padding: 4rem clamp(1rem, 4vw, 5rem) 2rem; max-width: 76rem; }
     .hero h1 { font-size: clamp(2.4rem, 6vw, 5.6rem); line-height: .92; margin: .3rem 0 1rem; letter-spacing: -.07em; }
     .hero p { color: #b9c7df; max-width: 58rem; }
+    .limit-strip { display: flex; flex-wrap: wrap; gap: .5rem; max-width: 72rem; margin-top: 1.2rem; }
+    .limit-strip span { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); color: #dfe8ff; border-radius: 999px; padding: .35rem .7rem; font-size: .78rem; }
     main { padding: 0 clamp(1rem, 4vw, 5rem) 4rem; display: grid; gap: 1rem; }
     .grid, .onboarding { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
     .panel { border: 1px solid rgba(180, 204, 255, .16); background: rgba(12, 18, 31, .78); border-radius: 1.5rem; padding: 1.25rem; box-shadow: 0 24px 80px rgba(0, 0, 0, .28); }
