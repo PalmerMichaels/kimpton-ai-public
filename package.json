@@ -1,0 +1,27 @@
+{
+  "name": "boutique-stay-assistant-public",
+  "version": "1.0.0",
+  "description": "Clean-room TypeScript demo for a synthetic boutique hospitality guest-assistance concept.",
+  "main": "dist/index.js",
+  "bin": {
+    "stay-assistant-demo": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "npm run build && node dist/tests/planner.test.js",
+    "validate": "npm run test && node dist/index.js --guest luna --property harbor --days 2 --format text"
+  },
+  "keywords": [
+    "clean-room",
+    "typescript",
+    "hospitality",
+    "demo",
+    "synthetic-data"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
